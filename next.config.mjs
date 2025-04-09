@@ -21,7 +21,14 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
+  serverExternalPackages: ['bcrypt', '@prisma/client/runtime/library'],
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,

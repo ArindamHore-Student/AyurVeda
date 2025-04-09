@@ -130,4 +130,40 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Prisma](https://www.prisma.io/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [shadcn/ui](https://ui.shadcn.com/)
-- [Lucide Icons](https://lucide.dev/) 
+- [Lucide Icons](https://lucide.dev/)
+
+## Deployment
+
+### Deploying to Vercel
+
+This project is configured for easy deployment on Vercel.
+
+1. **Connect to GitHub**: Push your changes to GitHub:
+   ```bash
+   git add .
+   git commit -m "Ready for Vercel deployment"
+   git push
+   ```
+
+2. **Import to Vercel**:
+   - Go to [Vercel](https://vercel.com/) and sign in
+   - Click "Add New" → "Project"
+   - Import your GitHub repository
+   - Configure your project:
+     - Framework Preset: Next.js
+     - Environment Variables: Add all variables from `.env.example`
+
+3. **Deploy**:
+   - Click "Deploy"
+   - Vercel will build and deploy your application automatically
+
+4. **Database Setup**:
+   - Set up a PostgreSQL database (e.g., on Supabase, Neon, or Railway)
+   - Update the `DATABASE_URL` environment variable in your Vercel project settings
+   - Run the following command to apply migrations to your production database:
+     ```bash
+     npx prisma migrate deploy
+     ```
+
+5. **Continuous Deployment**:
+   - Vercel will automatically deploy new changes when you push to your main branch 
