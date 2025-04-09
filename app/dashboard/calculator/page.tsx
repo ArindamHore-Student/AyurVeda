@@ -211,6 +211,52 @@ export default function DosageCalculatorPage() {
   const [showResults, setShowResults] = useState<boolean>(false)
   
   /**
+   * Helper functions for rendering dosage information
+   */
+  const renderStandardDosage = () => {
+    const med = medications.find(m => m.id.toString() === selectedMedication);
+    if (!med) return "Medication not found";
+    
+    // Basic dosage calculation based on medication and patient type
+    if (patientType === "adult") {
+      return med.name === "Paracetamol" 
+        ? "500-1000 mg every 4-6 hours as needed (Max: 4g/day)" 
+        : med.name === "Ibuprofen"
+        ? "400-800 mg every 6-8 hours as needed (Max: 3.2g/day)"
+        : "Please refer to standard guidelines for this medication";
+    } else {
+      return med.name === "Paracetamol"
+        ? "10-15 mg/kg every 4-6 hours as needed (Max: 90 mg/kg/day, not to exceed adult dose)"
+        : med.name === "Ibuprofen"
+        ? "5-10 mg/kg every 6-8 hours as needed (Max: 40 mg/kg/day)"
+        : "Please refer to pediatric guidelines for this medication";
+    }
+  }
+
+  const renderWeightBasedDosing = () => {
+    const med = medications.find(m => m.id.toString() === selectedMedication);
+    if (!med || !weight) return "Please enter a valid weight";
+    
+    const weightNum = parseFloat(weight);
+    if (isNaN(weightNum)) return "Invalid weight value";
+    
+    // Weight-based calculation
+    if (patientType === "adult") {
+      return med.name === "Paracetamol"
+        ? `Based on ${weightNum} kg: 10-15 mg/kg = ${Math.round(weightNum * 10)}-${Math.round(weightNum * 15)} mg per dose`
+        : med.name === "Ibuprofen"
+        ? `Based on ${weightNum} kg: 5-10 mg/kg = ${Math.round(weightNum * 5)}-${Math.round(weightNum * 10)} mg per dose`
+        : "Please refer to product literature for weight-based dosing";
+    } else {
+      return med.name === "Paracetamol"
+        ? `Based on ${weightNum} kg: 10-15 mg/kg = ${Math.round(weightNum * 10)}-${Math.round(weightNum * 15)} mg per dose`
+        : med.name === "Ibuprofen"
+        ? `Based on ${weightNum} kg: 5-10 mg/kg = ${Math.round(weightNum * 5)}-${Math.round(weightNum * 10)} mg per dose`
+        : "Please refer to pediatric guidelines for weight-based dosing";
+    }
+  }
+  
+  /**
    * Render the medication calculator interface with tabs for different calculation tools
    */
   return (
@@ -405,53 +451,14 @@ export default function DosageCalculatorPage() {
               <div>
                 <h4 className="font-medium">Standard Dosage:</h4>
                 <p className="text-muted-foreground">
-                  {(() => {
-                    const med = medications.find(m => m.id.toString() === selectedMedication);
-                    if (!med) return "Medication not found";
-                    
-                    // Basic dosage calculation based on medication and patient type
-                    if (patientType === "adult") {
-                      return med.name === "Paracetamol" 
-                        ? "500-1000 mg every 4-6 hours as needed (Max: 4g/day)" 
-                        : med.name === "Ibuprofen"
-                        ? "400-800 mg every 6-8 hours as needed (Max: 3.2g/day)"
-                        : "Please refer to standard guidelines for this medication";
-                    } else {
-                      return med.name === "Paracetamol"
-                        ? "10-15 mg/kg every 4-6 hours as needed (Max: 90 mg/kg/day, not to exceed adult dose)"
-                        : med.name === "Ibuprofen"
-                        ? "5-10 mg/kg every 6-8 hours as needed (Max: 40 mg/kg/day)"
-                        : "Please refer to pediatric guidelines for this medication";
-                    }
-                  })()}
+                  {renderStandardDosage()}
                 </p>
               </div>
               
               <div>
                 <h4 className="font-medium">Weight-Based Dosing:</h4>
                 <p className="text-muted-foreground">
-                  {(() => {
-                    const med = medications.find(m => m.id.toString() === selectedMedication);
-                    if (!med || !weight) return "Please enter a valid weight";
-                    
-                    const weightNum = parseFloat(weight);
-                    if (isNaN(weightNum)) return "Invalid weight value";
-                    
-                    // Weight-based calculation
-                    if (patientType === "adult") {
-                      return med.name === "Paracetamol"
-                        ? `Based on ${weightNum} kg: 10-15 mg/kg = ${Math.round(weightNum * 10)}-${Math.round(weightNum * 15)} mg per dose`
-                        : med.name === "Ibuprofen"
-                        ? `Based on ${weightNum} kg: 5-10 mg/kg = ${Math.round(weightNum * 5)}-${Math.round(weightNum * 10)} mg per dose`
-                        : "Please refer to product literature for weight-based dosing";
-                    } else {
-                      return med.name === "Paracetamol"
-                        ? `Based on ${weightNum} kg: 10-15 mg/kg = ${Math.round(weightNum * 10)}-${Math.round(weightNum * 15)} mg per dose`
-                        : med.name === "Ibuprofen"
-                        ? `Based on ${weightNum} kg: 5-10 mg/kg = ${Math.round(weightNum * 5)}-${Math.round(weightNum * 10)} mg per dose`
-                        : "Please refer to pediatric guidelines for weight-based dosing";
-                    }
-                  })()}
+                  {renderWeightBasedDosing()}
                 </p>
               </div>
               
