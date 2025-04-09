@@ -29,7 +29,7 @@ AyurVeda is a comprehensive medication management application built with Next.js
 
 - Node.js 16.x or later
 - npm or pnpm
-- PostgreSQL
+- PostgreSQL database (local or cloud-based like Neon, Supabase, or Railway)
 
 ### Installation
 
@@ -41,7 +41,7 @@ AyurVeda is a comprehensive medication management application built with Next.js
 
 2. Install dependencies:
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    # or
    pnpm install
    ```
@@ -49,7 +49,10 @@ AyurVeda is a comprehensive medication management application built with Next.js
 3. Create a `.env.local` file in the root directory with the following variables:
    ```
    # Database
-   DATABASE_URL="postgresql://user:password@localhost:5432/ayurveda"
+   # For local development with PostgreSQL:
+   DATABASE_URL="postgresql://username:password@localhost:5432/ayurveda"
+   # OR for cloud-based development (recommended):
+   # DATABASE_URL="postgresql://username:password@endpoint.provider.com/dbname"
 
    # NextAuth
    NEXTAUTH_URL=http://localhost:3000
@@ -61,7 +64,9 @@ AyurVeda is a comprehensive medication management application built with Next.js
 
 4. Set up the database:
    ```bash
+   # Apply migrations to your database
    npx prisma migrate dev
+   # Seed the database with initial data (if available)
    npx prisma db seed
    ```
 
@@ -134,16 +139,19 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Deployment
 
-### Deploying to Vercel
+### Deploying to Vercel with SQLite
 
-This project is configured for easy deployment on Vercel.
+This project is configured to use SQLite for both local development and Vercel deployment, which simplifies the setup process.
 
-1. **Connect to GitHub**: Push your changes to GitHub:
-   ```bash
-   git add .
-   git commit -m "Ready for Vercel deployment"
-   git push
-   ```
+1. **Prepare for deployment**:
+   - SQLite database files are automatically created and managed
+   - No need for external database services
+   - Push your changes to GitHub:
+     ```bash
+     git add .
+     git commit -m "Ready for Vercel deployment"
+     git push
+     ```
 
 2. **Import to Vercel**:
    - Go to [Vercel](https://vercel.com/) and sign in
@@ -151,19 +159,29 @@ This project is configured for easy deployment on Vercel.
    - Import your GitHub repository
    - Configure your project:
      - Framework Preset: Next.js
-     - Environment Variables: Add all variables from `.env.example`
+     - Environment Variables: 
+       - `NEXTAUTH_SECRET`: A secure random string
+       - `NEXTAUTH_URL`: Your production URL (e.g., https://your-app.vercel.app)
+       - `GEMINI_API_KEY`: Your Google Gemini API key (if using AI features)
 
 3. **Deploy**:
    - Click "Deploy"
    - Vercel will build and deploy your application automatically
 
-4. **Database Setup**:
-   - Set up a PostgreSQL database (e.g., on Supabase, Neon, or Railway)
-   - Update the `DATABASE_URL` environment variable in your Vercel project settings
-   - Run the following command to apply migrations to your production database:
-     ```bash
-     npx prisma migrate deploy
-     ```
+4. **Important Notes About SQLite on Vercel**:
+   - SQLite databases on Vercel are **read-only** in production
+   - The database is created during build time
+   - You can pre-seed your database during the build phase, which is done via the `postinstall` script
+   - Changes made during runtime won't persist between deploys or serverless function invocations
+   - This approach is suitable for:
+     - Demo applications
+     - Content-focused sites that rarely change data
+     - Applications where data persistence is not critical
 
-5. **Continuous Deployment**:
+5. **For Production Applications**:
+   - For production applications that need to frequently write data, consider:
+     - Using a managed database service (PostgreSQL on Neon, Supabase, etc.)
+     - Implementing a more robust data persistence strategy
+
+6. **Continuous Deployment**:
    - Vercel will automatically deploy new changes when you push to your main branch 

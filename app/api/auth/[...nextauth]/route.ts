@@ -1,10 +1,8 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
 import { compare } from "bcrypt"
-
-const prisma = new PrismaClient()
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import prisma from "@/lib/db-adapter"
 
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -49,14 +47,16 @@ const handler = NextAuth({
   callbacks: {
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.sub
-        session.user.role = token.role
+        session.user.id = token.sub || '';
+        // @ts-ignore - We know role exists in our custom token
+        session.user.role = token.role || 'USER';
       }
       return session
     },
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        // @ts-ignore - We know role exists in our custom user
+        token.role = user.role || 'USER';
       }
       return token
     },
