@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node start.js",
+    "dev:next": "next dev",
     "db:reset": "rimraf .next && rimraf prisma/dev.db && npx prisma migrate reset --force",
     "build": "npx prisma generate && npx prisma migrate deploy && node prisma/production-seed.js && next build",
     "start": "next start -p 3001",
     "lint": "next lint",
     "prisma:seed": "node prisma/seed.js",
+    "prisma:studio": "node studio.js",
     "postinstall": "npx prisma generate"
   },
   "dependencies": {
@@ -80,12 +82,15 @@
     "zod": "latest"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.24.0",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
     "eslint": "^9.24.0",
+    "eslint-config-next": "^15.3.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "postcss": "^8",
