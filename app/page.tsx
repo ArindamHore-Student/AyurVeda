@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Pill, Calculator, Calendar, MessageCircle, User, Clipboard, PlusCircle } from "lucide-react"
 
 export default function Home() {
   return (
@@ -129,7 +129,12 @@ export default function Home() {
                   className="flex flex-col items-center space-y-2 rounded-lg border bg-background p-4 shadow-sm"
                 >
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                    <div className="h-6 w-6 text-primary" />
+                    {feature.icon === "pill" && <Pill className="h-6 w-6 text-primary" />}
+                    {feature.icon === "calculator" && <Calculator className="h-6 w-6 text-primary" />}
+                    {feature.icon === "calendar" && <Calendar className="h-6 w-6 text-primary" />}
+                    {feature.icon === "message-circle" && <MessageCircle className="h-6 w-6 text-primary" />}
+                    {feature.icon === "user" && <User className="h-6 w-6 text-primary" />}
+                    {feature.icon === "clipboard" && <Clipboard className="h-6 w-6 text-primary" />}
                   </div>
                   <h3 className="text-xl font-bold">{feature.title}</h3>
                   <p className="text-sm text-gray-500">{feature.description}</p>
