@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -116,18 +116,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-// Add MedicationCatalog model for the calculator
-model MedicationCatalog {
-  id              String   @id @default(cuid())
-  name            String   @unique
-  category        String
-  standardDosage  String
-  weightBasedDose String?
-  pediatricDose   String?
-  renalAdjustment Boolean  @default(false)
-  ageRanges       String?  // Stored as JSON string
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
 }

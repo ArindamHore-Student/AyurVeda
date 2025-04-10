@@ -1,114 +1,199 @@
-# AyurVeda - AI-powered Pharmacy Assistant
+# AyurVeda - Medication Management System
 
-AyurVeda is a comprehensive pharmacy assistant application that helps healthcare professionals manage medications, calculate dosages, and provide optimal care to patients.
+AyurVeda is a comprehensive medication management application built with Next.js, helping users track their medications, check for drug interactions, and maintain proper adherence to their treatment plans.
+
+## Screenshots
+
+### Dashboard Overview
+![AyurVeda Dashboard](https://via.placeholder.com/800x400?text=Dashboard+Overview)
+*The main dashboard showing medication schedule, adherence statistics, and upcoming doses.*
+
+### Medication Management
+![Medication Management](https://via.placeholder.com/800x400?text=Medication+Management)
+*Add, edit, and track your medications with detailed information and dosage schedules.*
+
+### Dosage Calculator
+![Dosage Calculator](https://via.placeholder.com/800x400?text=Dosage+Calculator)
+*Calculate precise medication dosages based on weight, age, and other patient factors.*
+
+### Drug Interaction Checker
+![Drug Interaction Checker](https://via.placeholder.com/800x400?text=Drug+Interaction+Checker)
+*Check for potential interactions between different medications in your treatment plan.*
 
 ## Features
 
-- Medication management and tracking
-- Dosage calculator with support for adult and pediatric patients
-- Weight-based medication dosing
-- Real-time medication advice and interactions
-- Responsive design for desktop and mobile
+- **Medication Management**: Add, edit, view, and delete medications with detailed information
+- **Interactive Dashboard**: View medication schedules, adherence rates, and upcoming doses
+- **Drug Interaction Checker**: Check for potential drug interactions between medications
+- **Adherence Tracking**: Track medication adherence with visual progress indicators
+- **Medication Information**: Access detailed information about medications
+- **User Authentication**: Secure login and registration system
+- **Responsive Design**: Works on desktop, tablet, and mobile devices
 
 ## Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
-- **UI**: Tailwind CSS, shadcn/ui
+- **Frontend**: Next.js, React, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend**: Next.js API Routes
+- **Database**: SQLite with Prisma ORM
 - **Authentication**: NextAuth.js
-- **Database**: PostgreSQL (Railway)
-- **ORM**: Prisma
-- **Deployment**: Vercel
+- **Styling**: Tailwind CSS
+- **State Management**: React Context API
 
-## Setting Up Railway + Vercel Deployment
+## Getting Started
 
-### Step 1: Set Up Railway PostgreSQL Database
+### Prerequisites
 
-1. Sign up for a [Railway](https://railway.app/) account
-2. Create a new project in Railway
-3. Add a PostgreSQL database to your project
-4. From the PostgreSQL service, go to the "Connect" tab
-5. Copy the PostgreSQL connection string (it should look like `postgresql://postgres:password@containers-us-west-XXX.railway.app:XXXX/railway`)
+- Node.js 16.x or later
+- npm or pnpm
 
-### Step 2: Configure Prisma for Railway
+### Installation
 
-1. Update the database schema to use PostgreSQL:
-   ```prisma
-   datasource db {
-     provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-
-2. Create migrations after schema changes:
+1. Clone the repository:
    ```bash
-   npx prisma migrate dev --name init
+   git clone https://github.com/yourusername/ayurveda.git
+   cd ayurveda
    ```
 
-### Step 3: Deploy to Vercel
-
-1. Push your code to a GitHub repository
-2. Sign up for a [Vercel](https://vercel.com/) account
-3. Import your GitHub repository into Vercel
-4. Add the following environment variables in Vercel:
-   - `DATABASE_URL` - The PostgreSQL connection string from Railway
-   - `NEXTAUTH_SECRET` - A secure random string for NextAuth.js
-   - `NEXTAUTH_URL` - Your deployed application URL (e.g., https://your-app.vercel.app)
-5. Deploy the application
-
-### Step 4: Run Database Migrations
-
-After deployment, you'll need to run migrations to set up your database schema.
-
-1. Install the Vercel CLI:
+2. Install dependencies:
    ```bash
-   npm i -g vercel
+   npm install --legacy-peer-deps
+   # or
+   pnpm install
    ```
 
-2. Log in to Vercel:
+3. Create a `.env` file in the root directory with the following variables:
+   ```
+   # Database (SQLite - local file-based database)
+   DATABASE_URL="file:./prisma/dev.db"
+
+   # NextAuth
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=your_nextauth_secret
+
+   # API Keys (optional)
+   GEMINI_API_KEY=your_gemini_api_key
+   GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
+   ```
+
+4. Set up the database:
    ```bash
-   vercel login
+   # Reset the database and apply migrations
+   npm run db:reset
    ```
 
-3. Link to your project:
+5. Start the development server:
    ```bash
-   vercel link
+   npm run dev
    ```
 
-4. Pull environment variables:
-   ```bash
-   vercel env pull .env
-   ```
+6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-5. Run migrations:
-   ```bash
-   npx prisma migrate deploy
-   ```
+## Running the Application
 
-6. (Optional) Seed the database:
-   ```bash
-   npx prisma db seed
-   ```
+### 1. Start the Server
+![Starting the Server](https://via.placeholder.com/800x250?text=Server+Starting+Up)
+*Run `npm run dev` to start the development server.*
 
-## Local Development
+### 2. Registration Page
+![Registration Page](https://via.placeholder.com/800x400?text=Registration+Page)
+*Create a new account to access the medication management system.*
 
-1. Clone the repository
-2. Install dependencies: `npm install`
-3. Copy the `.env.example` file to `.env.local` and fill in the required values
-4. Start the development server: `npm run dev`
+### 3. Login Page
+![Login Page](https://via.placeholder.com/800x400?text=Login+Page)
+*Sign in with your credentials to access your personalized dashboard.*
 
-## Database Schema Updates
+### 4. Dashboard Navigation
+![Dashboard Navigation](https://via.placeholder.com/800x400?text=Dashboard+Navigation)
+*Navigate through the various features using the sidebar menu.*
 
-When you need to update the database schema:
+### 5. Adding a New Medication
+![Adding Medication](https://via.placeholder.com/800x400?text=Adding+New+Medication)
+*Add new medications to your profile with detailed dosage information.*
 
-1. Modify the Prisma schema in `prisma/schema.prisma`
-2. Generate a new migration:
-   ```bash
-   npx prisma migrate dev --name your_migration_name
-   ```
-3. Push the changes to your Railway database:
-   ```bash
-   npx prisma migrate deploy
-   ```
+### Database Management
+
+This project uses SQLite, a file-based database that doesn't require a separate database server. The database file is stored at `prisma/dev.db` and is created automatically when you run the database setup commands.
+
+- **Reset Database**: If you need to reset the database at any point:
+  ```bash
+  npm run db:reset
+  ```
+
+- **View Database**: To explore the database structure using Prisma Studio:
+  ```bash
+  npm run prisma:studio
+  ```
+  
+  ![Prisma Studio](https://via.placeholder.com/800x400?text=Prisma+Studio+Database+Explorer)
+  *Prisma Studio provides a visual interface to browse and edit your database.*
+
+## Project Structure
+
+```
+ayurveda/
+├── app/                # Next.js app directory
+│   ├── api/            # API routes
+│   ├── dashboard/      # Dashboard routes
+│   ├── login/          # Login page
+│   ├── register/       # Registration page
+│   ├── layout.tsx      # Root layout
+│   └── page.tsx        # Home page
+├── components/         # Reusable components
+│   ├── ui/             # UI components
+│   └── dashboard/      # Dashboard-specific components
+├── lib/                # Utility functions
+├── prisma/             # Prisma schema and migrations
+│   ├── dev.db          # SQLite database file
+│   ├── schema.prisma   # Database schema definition
+│   └── migrations/     # Database migrations
+├── public/             # Static assets
+└── styles/             # Global styles
+```
+
+## Troubleshooting
+
+### Common Issues
+
+- **Database Errors**: If you encounter database-related errors, try resetting the database:
+  ```bash
+  npm run db:reset
+  ```
+
+- **Next.js Build Errors**: If you get build errors related to the .next directory:
+  ```bash
+  # Remove the .next directory and rebuild
+  rm -rf .next
+  npm run dev
+  ```
+
+- **Environment Variables**: Make sure all required environment variables are set in your .env file.
+
+## API Routes
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/auth/[...nextauth]` | GET/POST | Authentication endpoints |
+| `/api/medications` | GET | Get all medications for current user |
+| `/api/medications` | POST | Create a new medication |
+| `/api/medications/:id` | GET | Get a specific medication |
+| `/api/medications/:id` | PUT | Update a medication |
+| `/api/medications/:id` | DELETE | Delete a medication |
+| `/api/adherence` | GET | Get adherence records |
+| `/api/adherence` | POST | Create a new adherence record |
+| `/api/interactions` | POST | Check for drug interactions |
+
+## Performance Optimizations
+
+1. **Context API with State Caching**: Used for efficient state management and to avoid prop drilling
+2. **Memoization**: Optimized expensive calculations with useMemo and useCallback
+3. **Code Splitting**: Implemented with Next.js dynamic imports
+4. **API Response Caching**: Implemented with HTTP cache headers
+5. **Image Optimization**: Using Next.js Image component
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
@@ -122,51 +207,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Lucide Icons](https://lucide.dev/)
 
-## Deployment
+## Important Notes About SQLite
 
-### Deploying to Vercel with SQLite
+- SQLite is a file-based database that works well for development and small applications
+- The database file is stored at `prisma/dev.db`
+- All data is stored locally on your machine
+- This approach is suitable for:
+  - Development environments
+  - Personal projects
+  - Small-scale applications
+  - Demonstrations
 
-This project is configured to use SQLite for both local development and Vercel deployment, which simplifies the setup process.
-
-1. **Prepare for deployment**:
-   - SQLite database files are automatically created and managed
-   - No need for external database services
-   - Push your changes to GitHub:
-     ```bash
-     git add .
-     git commit -m "Ready for Vercel deployment"
-     git push
-     ```
-
-2. **Import to Vercel**:
-   - Go to [Vercel](https://vercel.com/) and sign in
-   - Click "Add New" → "Project"
-   - Import your GitHub repository
-   - Configure your project:
-     - Framework Preset: Next.js
-     - Environment Variables: 
-       - `NEXTAUTH_SECRET`: A secure random string
-       - `NEXTAUTH_URL`: Your production URL (e.g., https://your-app.vercel.app)
-       - `GEMINI_API_KEY`: Your Google Gemini API key (if using AI features)
-
-3. **Deploy**:
-   - Click "Deploy"
-   - Vercel will build and deploy your application automatically
-
-4. **Important Notes About SQLite on Vercel**:
-   - SQLite databases on Vercel are **read-only** in production
-   - The database is created during build time
-   - You can pre-seed your database during the build phase, which is done via the `postinstall` script
-   - Changes made during runtime won't persist between deploys or serverless function invocations
-   - This approach is suitable for:
-     - Demo applications
-     - Content-focused sites that rarely change data
-     - Applications where data persistence is not critical
-
-5. **For Production Applications**:
-   - For production applications that need to frequently write data, consider:
-     - Using a managed database service (PostgreSQL on Neon, Supabase, etc.)
-     - Implementing a more robust data persistence strategy
-
-6. **Continuous Deployment**:
-   - Vercel will automatically deploy new changes when you push to your main branch 
+- For production applications that need to handle significant user load, consider:
+  - Migrating to a more robust database like PostgreSQL
+  - Using a managed database service (Neon, Supabase, etc.) 

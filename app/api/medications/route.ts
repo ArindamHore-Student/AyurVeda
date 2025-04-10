@@ -17,7 +17,6 @@ import { PrismaClient } from "@prisma/client"
 import { getServerSession } from "next-auth/next"
 import { z } from "zod"
 import { handleApiError } from "@/lib/utils"
-import { getAllMedications, getMedicationById } from '@/lib/medication-catalog'
 
 // Initialize Prisma client
 const prisma = new PrismaClient()
@@ -46,31 +45,47 @@ const medicationSchema = z.object({
  * 
  * @returns A list of medications or an error response
  */
-export async function GET(req: Request) {
+export async function GET() {
   try {
-    const url = new URL(req.url)
-    const id = url.searchParams.get('id')
+    const session = await getServerSession()
 
-    if (id) {
-      // Get a specific medication by ID
-      const medication = await getMedicationById(id)
-      
-      if (!medication) {
-        return NextResponse.json({ error: 'Medication not found' }, { status: 404 })
-      }
-      
-      return NextResponse.json(medication)
-    } else {
-      // Get all medications
-      const medications = await getAllMedications()
-      return NextResponse.json(medications)
+    // Check authentication
+    if (!session?.user?.email) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
+
+    // Find the user by email
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 })
+    }
+
+    // Get user's medications with related data
+    const medications = await prisma.medication.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        prescription: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    })
+
+    // Add cache control headers to improve performance
+    return NextResponse.json(medications, {
+      headers: {
+        'Cache-Control': 'private, max-age=10, stale-while-revalidate=30'
+      }
+    })
   } catch (error) {
-    console.error('Error in medications API:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch medications' },
-      { status: 500 }
-    )
+    const { message, status } = handleApiError(error)
+    console.error("Error fetching medications:", error)
+    return NextResponse.json({ message }, { status })
   }
 }
 
