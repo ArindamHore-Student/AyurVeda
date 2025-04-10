@@ -49,7 +49,12 @@ export async function POST(req: Request) {
     // Remove sensitive data
     const { passwordHash: _, ...userWithoutPassword } = user
 
-    return NextResponse.json({ message: "User registered successfully", user: userWithoutPassword }, { status: 201 })
+    // Return user data with original password for auto sign-in
+    return NextResponse.json({ 
+      message: "User registered successfully", 
+      user: userWithoutPassword,
+      credentials: { email, password } // Include credentials for auto sign-in
+    }, { status: 201 })
   } catch (error) {
     console.error("Registration error:", error)
     return NextResponse.json({ message: "An error occurred during registration" }, { status: 500 })

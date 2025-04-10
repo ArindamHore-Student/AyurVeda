@@ -293,6 +293,12 @@ export default function MedicationsPage() {
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add New Medication</DialogTitle>
+                        <DialogDescription>
+                          Enter the details for your new medication
+                        </DialogDescription>
+                      </DialogHeader>
                       {/* Add Medication Form */}
                     </DialogContent>
                   </Dialog>
@@ -428,6 +434,12 @@ export default function MedicationsPage() {
                       </Button>
                     </DialogTrigger>
                     <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add New Medication</DialogTitle>
+                        <DialogDescription>
+                          Enter the details for your new medication
+                        </DialogDescription>
+                      </DialogHeader>
                       {/* Add Medication Form */}
                     </DialogContent>
                   </Dialog>

@@ -81,7 +81,7 @@ export default function CollapsibleSidebar({ className }: CollapsibleSidebarProp
       name: "Adherence",
       href: "/dashboard/adherence",
       icon: <Check className="h-[18px] w-[18px]" />,
-      badge: "90%",
+      badge: "",
       description: "Medication tracking"
     },
     {
@@ -243,7 +243,7 @@ export default function CollapsibleSidebar({ className }: CollapsibleSidebarProp
                   <div className="flex flex-col">
                     <span className="text-xs font-medium">Medication Adherence</span>
                     <div className="h-1.5 w-full bg-muted rounded-full mt-1.5 overflow-hidden">
-                      <div className="h-full bg-primary rounded-full" style={{ width: "87%" }}></div>
+                      <div className="h-full bg-primary rounded-full" style={{ width: "92%" }}></div>
                     </div>
                   </div>
                 </>

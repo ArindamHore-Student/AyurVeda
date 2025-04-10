@@ -8,20 +8,20 @@ datasource db {
 }
 
 model User {
-  id                String              @id @default(cuid())
-  name              String
-  email             String              @unique
-  emailVerified     DateTime?
-  passwordHash      String
-  role              String              @default("PATIENT")
-  image             String?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  medications       Medication[]
-  adherenceRecords  AdherenceRecord[]
-  prescriptions     Prescription[]
-  accounts          Account[]
-  sessions          Session[]
+  id               String            @id @default(cuid())
+  name             String
+  email            String            @unique
+  emailVerified    DateTime?
+  passwordHash     String
+  role             String            @default("PATIENT")
+  image            String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  accounts         Account[]
+  adherenceRecords AdherenceRecord[]
+  medications      Medication[]
+  prescriptions    Prescription[]
+  sessions         Session[]
 }
 
 model Account {
@@ -37,8 +37,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -52,63 +51,63 @@ model Session {
 }
 
 model Medication {
-  id                String              @id @default(cuid())
-  name              String
-  dosage            String
-  frequency         String
-  instructions      String?
-  startDate         DateTime
-  endDate           DateTime?
-  purpose           String?
-  prescriptionId    String?
-  userId            String
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  prescription      Prescription?       @relation(fields: [prescriptionId], references: [id])
-  adherenceRecords  AdherenceRecord[]
-  interactions      MedicationInteraction[]
+  id               String                  @id @default(cuid())
+  name             String
+  dosage           String
+  frequency        String
+  instructions     String?
+  startDate        DateTime
+  endDate          DateTime?
+  purpose          String?
+  prescriptionId   String?
+  userId           String
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  adherenceRecords AdherenceRecord[]
+  prescription     Prescription?           @relation(fields: [prescriptionId], references: [id])
+  user             User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interactions     MedicationInteraction[]
 }
 
 model Prescription {
-  id                String              @id @default(cuid())
-  prescribedBy      String
-  prescribedDate    DateTime
-  refills           Int                 @default(0)
-  refillsRemaining  Int                 @default(0)
-  nextRefillDate    DateTime?
-  pharmacy          String?
-  userId            String
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  medications       Medication[]
+  id               String       @id @default(cuid())
+  prescribedBy     String
+  prescribedDate   DateTime
+  refills          Int          @default(0)
+  refillsRemaining Int          @default(0)
+  nextRefillDate   DateTime?
+  pharmacy         String?
+  userId           String
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  medications      Medication[]
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model AdherenceRecord {
-  id                String              @id @default(cuid())
-  medicationId      String
-  userId            String
-  scheduledTime     DateTime
-  takenTime         DateTime?
-  skipped           Boolean             @default(false)
-  notes             String?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  medication        Medication          @relation(fields: [medicationId], references: [id], onDelete: Cascade)
-  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String     @id @default(cuid())
+  medicationId  String
+  userId        String
+  scheduledTime DateTime
+  takenTime     DateTime?
+  skipped       Boolean    @default(false)
+  notes         String?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  medication    Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
 }
 
 model MedicationInteraction {
-  id                String              @id @default(cuid())
-  medicationId      String
-  interactingMedId  String
-  severity          String              @default("UNKNOWN") // LOW, MEDIUM, HIGH, SEVERE, UNKNOWN
-  description       String
-  recommendation    String?
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  medication        Medication          @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  id               String     @id @default(cuid())
+  medicationId     String
+  interactingMedId String
+  severity         String     @default("UNKNOWN")
+  description      String
+  recommendation   String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  medication       Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -118,4 +117,3 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
