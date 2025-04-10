@@ -293,15 +293,18 @@ export default function AdherencePage() {
   const adherenceRecords = generateAdherenceRecords();
   const adherenceStats = calculateAdherenceStats(adherenceRecords);
 
-  // Function to render the adherence bar
+  // Modified AdherenceBar component with animations
   const AdherenceBar = ({ percentage }: { percentage: number }) => {
     let color = "bg-green-500";
     if (percentage < 80) color = "bg-red-500";
     else if (percentage < 90) color = "bg-yellow-500";
 
     return (
-      <div className="h-2 w-full rounded-full bg-muted">
-        <div className={`h-2 rounded-full ${color}`} style={{ width: `${percentage}%` }} />
+      <div className="progress-bar">
+        <div 
+          className="progress-bar-fill" 
+          style={{ width: `${percentage}%` }} 
+        />
       </div>
     );
   };
@@ -345,13 +348,13 @@ export default function AdherencePage() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <div>
+        <div className="animate-slide-up">
           <h1 className="text-3xl font-bold">Medication Adherence</h1>
           <p className="text-muted-foreground">Track how well you're keeping up with your medication schedule</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 animate-slide-in-right">
           <span className="text-sm text-muted-foreground">Timeframe:</span>
           <Select value={timeframe} onValueChange={setTimeframe}>
             <SelectTrigger className="w-[120px]">
@@ -367,15 +370,15 @@ export default function AdherencePage() {
       </div>
 
       {upcomingDoses.length > 0 && (
-        <Alert className="bg-primary/5 border-primary/20">
+        <Alert className="bg-primary/5 border-primary/20 animate-slide-up delay-100">
           <Pill className="h-4 w-4 text-primary" />
           <AlertTitle>Upcoming doses</AlertTitle>
           <AlertDescription>
             You have {upcomingDoses.length} {upcomingDoses.length === 1 ? 'dose' : 'doses'} scheduled for today.
             <div className="mt-2">
-              <Link href="/dashboard/medications" className="inline-flex items-center text-sm font-medium text-primary">
+              <Link href="/dashboard/medications" className="inline-flex items-center text-sm font-medium text-primary hover:underline transition-all">
                 View medication schedule 
-                <ChevronRight className="ml-1 h-4 w-4" />
+                <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </AlertDescription>
@@ -383,7 +386,7 @@ export default function AdherencePage() {
       )}
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card>
+        <Card className="card-glass animate-slide-up delay-200">
           <CardHeader className="pb-2">
             <CardTitle>
               <span>Overall Adherence</span>
@@ -392,7 +395,7 @@ export default function AdherencePage() {
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center space-y-2">
-              <div className={`text-5xl font-bold ${getAdherenceColor(adherenceStats.overall)}`}>
+              <div className={`text-5xl font-bold ${getAdherenceColor(adherenceStats.overall)} animate-pulse-subtle`}>
                 {adherenceStats.overall}%
               </div>
               <AdherenceBar percentage={adherenceStats.overall} />
@@ -407,15 +410,17 @@ export default function AdherencePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-glass animate-slide-up delay-300">
           <CardHeader className="pb-2">
             <CardTitle>Doses Taken</CardTitle>
             <CardDescription>Last {timeframe} days</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center space-y-2">
-              <div className="text-5xl font-bold">
-                {adherenceRecords.filter((r) => r.status === "taken").length}
+              <div className="text-5xl font-bold group">
+                <span className="group-hover:text-primary transition-colors duration-300">
+                  {adherenceRecords.filter((r) => r.status === "taken").length}
+                </span>
                 <span className="text-lg text-muted-foreground">/{adherenceRecords.length}</span>
               </div>
               <p className="text-sm text-muted-foreground">
@@ -426,31 +431,43 @@ export default function AdherencePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-glass animate-slide-up delay-400">
           <CardHeader className="pb-2">
             <CardTitle>Streak</CardTitle>
             <CardDescription>Consecutive days with perfect adherence</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center justify-center space-y-2">
-              <div className="text-5xl font-bold">{adherenceStats.streak.current}</div>
+              <div className="text-5xl font-bold relative">
+                <span className="z-10 relative">{adherenceStats.streak.current}</span>
+                <div className="absolute inset-0 bg-primary/10 rounded-full -z-10 animate-circle-grow"></div>
+              </div>
               <p className="text-sm text-muted-foreground">Your best streak was {adherenceStats.streak.best} days</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs defaultValue="calendar" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="calendar">Calendar</TabsTrigger>
-          <TabsTrigger value="by-medication">By Medication</TabsTrigger>
-          <TabsTrigger value="by-time">By Time of Day</TabsTrigger>
+      <Tabs defaultValue="calendar" className="space-y-4 animate-fade-in delay-500">
+        <TabsList className="bg-muted/60 p-1 backdrop-blur-sm">
+          <TabsTrigger value="calendar" className="data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300">
+            <CalendarIcon className="h-4 w-4 mr-2" />
+            Calendar
+          </TabsTrigger>
+          <TabsTrigger value="by-medication" className="data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300">
+            <Pill className="h-4 w-4 mr-2" />
+            By Medication
+          </TabsTrigger>
+          <TabsTrigger value="by-time" className="data-[state=active]:bg-background data-[state=active]:shadow-sm transition-all duration-300">
+            <Clock className="h-4 w-4 mr-2" />
+            By Time of Day
+          </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="calendar">
-          <Card>
+        <TabsContent value="calendar" className="animate-fade-in">
+          <Card className="card-glass">
             <CardHeader>
-              <CardTitle>Adherence Calendar</CardTitle>
+              <CardTitle className="section-title">Adherence Calendar</CardTitle>
               <CardDescription>View your medication adherence by date</CardDescription>
             </CardHeader>
             <CardContent>
@@ -459,7 +476,7 @@ export default function AdherencePage() {
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  className="rounded-md border"
+                  className="rounded-md border shadow-sm"
                   modifiers={{
                     perfect: (date) => {
                       const dateStr = format(date, "yyyy-MM-dd")
@@ -482,15 +499,15 @@ export default function AdherencePage() {
                     },
                   }}
                   modifiersClassNames={{
-                    perfect: "bg-green-100 text-green-900 font-medium",
-                    partial: "bg-yellow-100 text-yellow-900 font-medium",
-                    missed: "bg-red-100 text-red-900 font-medium",
+                    perfect: "bg-green-100 text-green-900 font-medium hover:bg-green-200 transition-colors",
+                    partial: "bg-yellow-100 text-yellow-900 font-medium hover:bg-yellow-200 transition-colors",
+                    missed: "bg-red-100 text-red-900 font-medium hover:bg-red-200 transition-colors",
                   }}
                 />
               </div>
 
               {date && (
-                <div className="mt-6 rounded-lg border p-4">
+                <div className="mt-6 rounded-lg border p-4 shadow-sm animate-fade-in">
                   <h3 className="font-medium">{format(date, "EEEE, MMMM d, yyyy")}</h3>
 
                   {format(date, "yyyy-MM-dd") in adherenceStats.calendar ? (
@@ -502,9 +519,13 @@ export default function AdherencePage() {
                           {adherenceStats.calendar[format(date, "yyyy-MM-dd")].total}
                         </span>
                       </div>
-                      <div className="space-y-2 mt-4">
-                        {getRecordsForDate(date).map((record) => (
-                          <div key={record.id} className="flex items-center justify-between border-b pb-2">
+                      <div className="space-y-2 mt-4 animate-fade-in">
+                        {getRecordsForDate(date).map((record, index) => (
+                          <div 
+                            key={record.id} 
+                            className="flex items-center justify-between border-b pb-2 hover:bg-muted/30 p-2 rounded-md transition-all duration-200"
+                            style={{ animationDelay: `${100 * index}ms` }}
+                          >
                             <div>
                               <div className="flex items-center">
                                 <div 
@@ -531,10 +552,21 @@ export default function AdherencePage() {
                               </div>
                             ) : (
                               <div className="flex items-center gap-2">
-                                <Button size="sm" variant="outline" onClick={() => markDoseTaken(record.id)}>
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  onClick={() => markDoseTaken(record.id)}
+                                  className="btn hover:border-green-500 hover:text-green-600 transition-all duration-300"
+                                >
+                                  <CheckCircle className="h-3.5 w-3.5 mr-1" />
                                   Mark Taken
                                 </Button>
-                                <Button size="sm" variant="ghost" onClick={() => markDoseSkipped(record.id)}>
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost" 
+                                  onClick={() => markDoseSkipped(record.id)}
+                                  className="hover:text-red-500 transition-colors duration-300"
+                                >
                                   Skip
                                 </Button>
                               </div>
@@ -567,16 +599,20 @@ export default function AdherencePage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="by-medication">
-          <Card>
+        <TabsContent value="by-medication" className="animate-fade-in">
+          <Card className="card-glass">
             <CardHeader>
-              <CardTitle>Adherence by Medication</CardTitle>
+              <CardTitle className="section-title">Adherence by Medication</CardTitle>
               <CardDescription>See which medications you're taking consistently</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {adherenceStats.byMedication.map((med) => (
-                  <div key={med.name} className="space-y-1">
+                {adherenceStats.byMedication.map((med, index) => (
+                  <div 
+                    key={med.name} 
+                    className="space-y-1 p-3 hover:bg-muted/20 rounded-lg transition-all duration-300 animate-slide-up"
+                    style={{ animationDelay: `${100 * index}ms` }}
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <div 
@@ -585,7 +621,7 @@ export default function AdherencePage() {
                         ></div>
                         <span className="font-medium">{med.name}</span>
                       </div>
-                      <span className={getAdherenceColor(med.adherence)}>{med.adherence}%</span>
+                      <span className={`${getAdherenceColor(med.adherence)} font-semibold`}>{med.adherence}%</span>
                     </div>
                     <AdherenceBar percentage={med.adherence} />
                     <div className="text-xs text-muted-foreground text-right">
@@ -596,30 +632,35 @@ export default function AdherencePage() {
 
                 <Separator className="my-4" />
                 
-                <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
+                <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900 card-glass">
                   <h3 className="font-medium mb-2">Improving Adherence</h3>
                   <p className="text-sm text-muted-foreground mb-4">
                     Consider these tips to improve your medication adherence:
                   </p>
                   <ul className="space-y-2 text-sm">
-                    <li className="flex gap-2">
-                      <Clock className="h-4 w-4 mt-0.5 text-primary" />
+                    <li className="flex gap-2 group hover:bg-muted/40 p-2 rounded-md transition-all duration-300">
+                      <Clock className="h-4 w-4 mt-0.5 text-primary group-hover:scale-110 transition-transform duration-300" />
                       <span>Set daily alarms or reminders for each dose</span>
                     </li>
-                    <li className="flex gap-2">
-                      <Pill className="h-4 w-4 mt-0.5 text-primary" />
+                    <li className="flex gap-2 group hover:bg-muted/40 p-2 rounded-md transition-all duration-300">
+                      <Pill className="h-4 w-4 mt-0.5 text-primary group-hover:scale-110 transition-transform duration-300" />
                       <span>Use a pill organizer to sort your medications by day</span>
                     </li>
-                    <li className="flex gap-2">
-                      <CalendarDays className="h-4 w-4 mt-0.5 text-primary" />
+                    <li className="flex gap-2 group hover:bg-muted/40 p-2 rounded-md transition-all duration-300">
+                      <CalendarDays className="h-4 w-4 mt-0.5 text-primary group-hover:scale-110 transition-transform duration-300" />
                       <span>Make taking medication part of your daily routine</span>
                     </li>
                   </ul>
                   
                   <div className="mt-4">
                     <Link href="/dashboard/medications">
-                      <Button variant="outline" size="sm" className="w-full">
-                        Manage Your Medications
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full group transition-all duration-300 hover:border-primary hover:bg-primary/5"
+                      >
+                        <span>Manage Your Medications</span>
+                        <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </Button>
                     </Link>
                   </div>
@@ -629,19 +670,23 @@ export default function AdherencePage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="by-time">
-          <Card>
+        <TabsContent value="by-time" className="animate-fade-in">
+          <Card className="card-glass">
             <CardHeader>
-              <CardTitle>Adherence by Time of Day</CardTitle>
+              <CardTitle className="section-title">Adherence by Time of Day</CardTitle>
               <CardDescription>See when you're most consistent with your medications</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {adherenceStats.byTime.map((time) => (
-                  <div key={time.time} className="space-y-1">
+                {adherenceStats.byTime.map((time, index) => (
+                  <div 
+                    key={time.time} 
+                    className="space-y-1 p-3 hover:bg-muted/20 rounded-lg transition-all duration-300 animate-slide-up"
+                    style={{ animationDelay: `${100 * index}ms` }}
+                  >
                     <div className="flex items-center justify-between">
                       <span className="font-medium">{time.time}</span>
-                      <span className={getAdherenceColor(time.adherence)}>{time.adherence}%</span>
+                      <span className={`${getAdherenceColor(time.adherence)} font-semibold`}>{time.adherence}%</span>
                     </div>
                     <AdherenceBar percentage={time.adherence} />
                     <div className="text-xs text-muted-foreground text-right">
@@ -652,7 +697,7 @@ export default function AdherencePage() {
 
                 <Separator className="my-4" />
 
-                <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
+                <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900 card-glass">
                   <h3 className="font-medium mb-2">Your Adherence Insights</h3>
                   
                   {adherenceStats.byTime.length > 0 && (
@@ -661,13 +706,13 @@ export default function AdherencePage() {
                       {(() => {
                         const mostConsistent = [...adherenceStats.byTime].sort((a, b) => b.adherence - a.adherence)[0];
                         return (
-                          <div className="flex gap-2">
-                            <CheckCircle className="h-4 w-4 mt-0.5 text-green-500" />
+                          <div className="flex gap-2 group hover:bg-green-50 dark:hover:bg-green-900/10 p-2 rounded-md transition-all duration-300">
+                            <CheckCircle className="h-4 w-4 mt-0.5 text-green-500 group-hover:scale-125 transition-transform duration-300" />
                             <div>
                               <p className="text-sm font-medium">Most Consistent</p>
                               <p className="text-sm text-muted-foreground">
                                 You're most consistent with your {mostConsistent.time.toLowerCase()} medication
-                                ({mostConsistent.adherence}% adherence)
+                                <span className="font-medium text-green-600 dark:text-green-400"> ({mostConsistent.adherence}% adherence)</span>
                               </p>
                             </div>
                           </div>
@@ -678,13 +723,13 @@ export default function AdherencePage() {
                       {(() => {
                         const leastConsistent = [...adherenceStats.byTime].sort((a, b) => a.adherence - b.adherence)[0];
                         return (
-                          <div className="flex gap-2">
-                            <AlertCircle className="h-4 w-4 mt-0.5 text-red-500" />
+                          <div className="flex gap-2 group hover:bg-red-50 dark:hover:bg-red-900/10 p-2 rounded-md transition-all duration-300">
+                            <AlertCircle className="h-4 w-4 mt-0.5 text-red-500 group-hover:scale-125 transition-transform duration-300" />
                             <div>
                               <p className="text-sm font-medium">Area for Improvement</p>
                               <p className="text-sm text-muted-foreground">
                                 You tend to miss your {leastConsistent.time.toLowerCase()} medication most often
-                                ({leastConsistent.adherence}% adherence)
+                                <span className="font-medium text-red-600 dark:text-red-400"> ({leastConsistent.adherence}% adherence)</span>
                               </p>
                             </div>
                           </div>
@@ -692,8 +737,8 @@ export default function AdherencePage() {
                       })()}
 
                       {/* Suggestion based on data */}
-                      <div className="flex gap-2">
-                        <div className="rounded-full bg-primary/10 p-1">
+                      <div className="flex gap-2 group hover:bg-blue-50 dark:hover:bg-blue-900/10 p-2 rounded-md transition-all duration-300">
+                        <div className="rounded-full bg-primary/10 p-1 group-hover:bg-primary/20 transition-colors duration-300">
                           <Clock className="h-4 w-4 text-primary" />
                         </div>
                         <div>
@@ -705,9 +750,10 @@ export default function AdherencePage() {
                           </p>
                           <Link
                             href="/dashboard/medications"
-                            className="text-xs text-primary hover:underline mt-1 inline-block"
+                            className="text-xs text-primary hover:underline mt-1 inline-flex items-center group-hover:font-medium transition-all duration-300"
                           >
-                            Set up medication reminders →
+                            Set up medication reminders
+                            <ChevronRight className="ml-1 h-3 w-3 transition-transform duration-300 group-hover:translate-x-1" />
                           </Link>
                         </div>
                       </div>

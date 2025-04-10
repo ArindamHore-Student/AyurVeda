@@ -232,18 +232,24 @@ export default function CollapsibleSidebar({ className }: CollapsibleSidebarProp
               collapsed ? "flex justify-center" : "flex items-center"
             )}>
               {collapsed ? (
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center hover:scale-110 transition-all duration-300 animate-pulse-subtle">
                   <Activity className="h-4 w-4 text-primary" />
                 </div>
               ) : (
                 <>
-                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center mr-3 hover:bg-primary/20 transition-all duration-300 animate-pulse-subtle">
                     <Activity className="h-5 w-5 text-primary" />
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-medium">Medication Adherence</span>
+                  <div className="flex flex-col w-full animate-fade-in">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-medium">Medication Adherence</span>
+                      <span className="text-xs font-bold text-primary">92%</span>
+                    </div>
                     <div className="h-1.5 w-full bg-muted rounded-full mt-1.5 overflow-hidden">
-                      <div className="h-full bg-primary rounded-full" style={{ width: "92%" }}></div>
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary/90 to-primary rounded-full animate-shimmer" 
+                        style={{ width: "92%" }}
+                      ></div>
                     </div>
                   </div>
                 </>
