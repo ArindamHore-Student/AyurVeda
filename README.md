@@ -1,48 +1,62 @@
 # AyurVeda - Medication Management System
 
-AyurVeda is a comprehensive medication management application built with Next.js, helping users track their medications, check for drug interactions, and maintain proper adherence to their treatment plans.
+AyurVeda is a comprehensive medication management application built with Next.js, helping users track their medications, check for drug interactions, and maintain proper adherence to their treatment plans. The platform combines AI-powered assistance with powerful medication management tools to enhance patient care.
 
-## Screenshots
+## Application Screenshots
 
-### Dashboard Overview
-![AyurVeda Dashboard](./docs/screenshots/dashboard-overview.png)
-*The main dashboard showing medication schedule, adherence statistics, and upcoming doses.*
+### Landing Page
+![Landing Page](./docs/screenshots/landing-page.png)
+*The AyurVeda welcome page showcasing the AI-Powered Pharmacy Assistant with an interactive chat interface. The landing page highlights key features including drug interaction checking, dosage calculation, and medication adherence tracking.*
+
+### User Authentication
+
+#### Registration
+![Registration Page](./docs/screenshots/register.png)
+*New users can create an account by providing their name, email, and password. The clean, minimalist registration form ensures a smooth onboarding experience.*
+
+#### Login
+![Login Page](./docs/screenshots/login.png)
+*Returning users can securely sign in using their email and password. The login page maintains the same clean design principles as the registration page.*
+
+### Main Dashboard
+![Dashboard](./docs/screenshots/dashboard.png)
+*The comprehensive dashboard provides an overview of the user's medication schedule, adherence statistics, and upcoming doses. Users can quickly access all key features from the sidebar navigation.*
 
 ### Medication Management
-![Medication Management](./docs/screenshots/medication-management.png)
-*Add, edit, and track your medications with detailed information and dosage schedules.*
+![Medications](./docs/screenshots/medications.png)
+*The medications page allows users to view, add, edit, and delete medications with detailed information including dosage, frequency, and special instructions. The interface uses a clean card-based layout for easy scanning of medication details.*
+
+### Medication Adherence Tracking
+![Adherence Tracking](./docs/screenshots/adherence.png)
+*The adherence tracking feature helps patients stay on schedule with their medications by providing visual reminders and progress tracking. Users can log when they've taken their medications and view historical adherence data.*
 
 ### Dosage Calculator
-![Dosage Calculator](./docs/screenshots/dosage-calculator.png)
-*Calculate precise medication dosages based on weight, age, and other patient factors.*
+![Medication Calculator](./docs/screenshots/medication-calculator.png)
+*The medication calculator provides precise dosage recommendations based on patient-specific factors such as weight, age, and kidney function. The calculator supports both adult and pediatric patients with specialized dosing algorithms.*
 
 ### Drug Interaction Checker
-![Drug Interaction Checker](./docs/screenshots/drug-interaction-checker.png)
-*Check for potential interactions between different medications in your treatment plan.*
+![Drug Interaction Checker](./docs/screenshots/drug-interaction.png)
+*The drug interaction tool analyzes potential interactions between multiple medications, alerting users to possible risks and providing severity ratings. The detailed information helps prevent adverse drug events before they occur.*
 
-## Adding Your Own Screenshots
+### AI Assistant
+![AI Assistant](./docs/screenshots/ai-assistant.png)
+*The AI-powered virtual assistant provides instant answers about medications, potential side effects, and general pharmaceutical information. Users can ask questions in natural language and receive clear, accurate responses.*
 
-To add your own screenshots to the README:
+### User Profile
+![User Profile](./docs/screenshots/profile.png)
+*Users can manage their personal information, preferences, and account settings from the profile page. The interface provides easy access to privacy settings and notification preferences.*
 
-1. Create the following directory structure in your project root:
-   ```
-   docs/
-   └── screenshots/
-       ├── dashboard-overview.png
-       ├── medication-management.png
-       ├── dosage-calculator.png
-       ├── drug-interaction-checker.png
-       ├── server-starting.png
-       ├── registration-page.png
-       ├── login-page.png
-       ├── dashboard-navigation.png
-       ├── adding-medication.png
-       └── prisma-studio.png
-   ```
+### Application Settings
+![Settings](./docs/screenshots/settings.png)
+*The settings page allows users to customize their experience, including theme preferences, notification settings, and privacy controls. The intuitive interface makes it easy to configure the application according to user needs.*
 
-2. Take screenshots of your application running locally
-3. Save them in the `docs/screenshots/` directory with the filenames shown above
-4. The README will automatically reference these images using relative paths
+### About AyurVeda
+![About](./docs/screenshots/about.png)
+*The about page provides information about the AyurVeda platform, its mission, and the team behind it. Users can learn about how the platform works and the technologies used to deliver its features.*
+
+### Workflow Overview
+![Workflow](./docs/screenshots/workflow.png)
+*This diagram illustrates how the different components of AyurVeda work together to provide a comprehensive medication management experience, from scheduling to adherence tracking to interaction checking.*
 
 ## Features
 
@@ -50,9 +64,12 @@ To add your own screenshots to the README:
 - **Interactive Dashboard**: View medication schedules, adherence rates, and upcoming doses
 - **Drug Interaction Checker**: Check for potential drug interactions between medications
 - **Adherence Tracking**: Track medication adherence with visual progress indicators
-- **Medication Information**: Access detailed information about medications
+- **Medication Calculator**: Calculate precise dosages based on patient-specific factors
+- **AI Virtual Assistant**: Get instant answers about medications and pharmaceutical information
 - **User Authentication**: Secure login and registration system
 - **Responsive Design**: Works on desktop, tablet, and mobile devices
+- **User Profiles**: Manage personal information and preferences
+- **Dark/Light Mode**: Choose between visual themes for comfortable viewing
 
 ## Tech Stack
 
@@ -60,6 +77,7 @@ To add your own screenshots to the README:
 - **Backend**: Next.js API Routes
 - **Database**: SQLite with Prisma ORM
 - **Authentication**: NextAuth.js
+- **AI Integration**: Google Gemini API
 - **Styling**: Tailwind CSS
 - **State Management**: React Context API
 
@@ -113,29 +131,20 @@ To add your own screenshots to the README:
 
 6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Running the Application
+## User Journey
 
-### 1. Start the Server
-![Starting the Server](./docs/screenshots/server-starting.png)
-*Run `npm run dev` to start the development server.*
+AyurVeda provides a seamless experience for managing medications:
 
-### 2. Registration Page
-![Registration Page](./docs/screenshots/registration-page.png)
-*Create a new account to access the medication management system.*
+1. **Register/Login**: Create an account or sign in
+2. **Dashboard**: View your medication schedule and adherence stats
+3. **Add Medications**: Enter your current prescriptions with dosage details
+4. **Check Interactions**: Verify that your medications are safe to take together
+5. **Set Reminders**: Configure notifications for when to take each medication
+6. **Track Adherence**: Log when you've taken each dose
+7. **Calculate Dosages**: Use the calculator for precise medication amounts
+8. **Ask the AI**: Get answers to any medication-related questions
 
-### 3. Login Page
-![Login Page](./docs/screenshots/login-page.png)
-*Sign in with your credentials to access your personalized dashboard.*
-
-### 4. Dashboard Navigation
-![Dashboard Navigation](./docs/screenshots/dashboard-navigation.png)
-*Navigate through the various features using the sidebar menu.*
-
-### 5. Adding a New Medication
-![Adding Medication](./docs/screenshots/adding-medication.png)
-*Add new medications to your profile with detailed dosage information.*
-
-### Database Management
+## Database Management
 
 This project uses SQLite, a file-based database that doesn't require a separate database server. The database file is stored at `prisma/dev.db` and is created automatically when you run the database setup commands.
 
@@ -148,9 +157,6 @@ This project uses SQLite, a file-based database that doesn't require a separate 
   ```bash
   npm run prisma:studio
   ```
-  
-  ![Prisma Studio](./docs/screenshots/prisma-studio.png)
-  *Prisma Studio provides a visual interface to browse and edit your database.*
 
 ## Project Structure
 
@@ -159,6 +165,10 @@ ayurveda/
 ├── app/                # Next.js app directory
 │   ├── api/            # API routes
 │   ├── dashboard/      # Dashboard routes
+│   │   ├── calculator/ # Medication calculator
+│   │   ├── medications/# Medication management
+│   │   ├── profile/    # User profile
+│   │   └── settings/   # Application settings
 │   ├── login/          # Login page
 │   ├── register/       # Registration page
 │   ├── layout.tsx      # Root layout
@@ -195,11 +205,14 @@ ayurveda/
 
 - **Environment Variables**: Make sure all required environment variables are set in your .env file.
 
+- **API Key Issues**: If the AI assistant isn't working, verify that your Gemini API key is correctly set in the .env file.
+
 ## API Routes
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/auth/[...nextauth]` | GET/POST | Authentication endpoints |
+| `/api/auth/register` | POST | User registration |
 | `/api/medications` | GET | Get all medications for current user |
 | `/api/medications` | POST | Create a new medication |
 | `/api/medications/:id` | GET | Get a specific medication |
@@ -208,6 +221,8 @@ ayurveda/
 | `/api/adherence` | GET | Get adherence records |
 | `/api/adherence` | POST | Create a new adherence record |
 | `/api/interactions` | POST | Check for drug interactions |
+| `/api/calculate` | POST | Calculate medication dosages |
+| `/api/ai/assistant` | POST | Interact with the AI assistant |
 
 ## Performance Optimizations
 
@@ -216,6 +231,7 @@ ayurveda/
 3. **Code Splitting**: Implemented with Next.js dynamic imports
 4. **API Response Caching**: Implemented with HTTP cache headers
 5. **Image Optimization**: Using Next.js Image component
+6. **Prefetching**: Key routes are prefetched for faster navigation
 
 ## Contributing
 
@@ -232,6 +248,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Tailwind CSS](https://tailwindcss.com/)
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Lucide Icons](https://lucide.dev/)
+- [Google Gemini API](https://ai.google.dev/)
 
 ## Important Notes About SQLite
 
