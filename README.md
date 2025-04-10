@@ -5,20 +5,44 @@ AyurVeda is a comprehensive medication management application built with Next.js
 ## Screenshots
 
 ### Dashboard Overview
-![AyurVeda Dashboard](https://via.placeholder.com/800x400?text=Dashboard+Overview)
+![AyurVeda Dashboard](./docs/screenshots/dashboard-overview.png)
 *The main dashboard showing medication schedule, adherence statistics, and upcoming doses.*
 
 ### Medication Management
-![Medication Management](https://via.placeholder.com/800x400?text=Medication+Management)
+![Medication Management](./docs/screenshots/medication-management.png)
 *Add, edit, and track your medications with detailed information and dosage schedules.*
 
 ### Dosage Calculator
-![Dosage Calculator](https://via.placeholder.com/800x400?text=Dosage+Calculator)
+![Dosage Calculator](./docs/screenshots/dosage-calculator.png)
 *Calculate precise medication dosages based on weight, age, and other patient factors.*
 
 ### Drug Interaction Checker
-![Drug Interaction Checker](https://via.placeholder.com/800x400?text=Drug+Interaction+Checker)
+![Drug Interaction Checker](./docs/screenshots/drug-interaction-checker.png)
 *Check for potential interactions between different medications in your treatment plan.*
+
+## Adding Your Own Screenshots
+
+To add your own screenshots to the README:
+
+1. Create the following directory structure in your project root:
+   ```
+   docs/
+   └── screenshots/
+       ├── dashboard-overview.png
+       ├── medication-management.png
+       ├── dosage-calculator.png
+       ├── drug-interaction-checker.png
+       ├── server-starting.png
+       ├── registration-page.png
+       ├── login-page.png
+       ├── dashboard-navigation.png
+       ├── adding-medication.png
+       └── prisma-studio.png
+   ```
+
+2. Take screenshots of your application running locally
+3. Save them in the `docs/screenshots/` directory with the filenames shown above
+4. The README will automatically reference these images using relative paths
 
 ## Features
 
@@ -70,7 +94,7 @@ AyurVeda is a comprehensive medication management application built with Next.js
    NEXTAUTH_URL=http://localhost:3000
    NEXTAUTH_SECRET=your_nextauth_secret
 
-   # API Keys (optional)
+   # API Keys
    GEMINI_API_KEY=your_gemini_api_key
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
@@ -92,23 +116,23 @@ AyurVeda is a comprehensive medication management application built with Next.js
 ## Running the Application
 
 ### 1. Start the Server
-![Starting the Server](https://via.placeholder.com/800x250?text=Server+Starting+Up)
+![Starting the Server](./docs/screenshots/server-starting.png)
 *Run `npm run dev` to start the development server.*
 
 ### 2. Registration Page
-![Registration Page](https://via.placeholder.com/800x400?text=Registration+Page)
+![Registration Page](./docs/screenshots/registration-page.png)
 *Create a new account to access the medication management system.*
 
 ### 3. Login Page
-![Login Page](https://via.placeholder.com/800x400?text=Login+Page)
+![Login Page](./docs/screenshots/login-page.png)
 *Sign in with your credentials to access your personalized dashboard.*
 
 ### 4. Dashboard Navigation
-![Dashboard Navigation](https://via.placeholder.com/800x400?text=Dashboard+Navigation)
+![Dashboard Navigation](./docs/screenshots/dashboard-navigation.png)
 *Navigate through the various features using the sidebar menu.*
 
 ### 5. Adding a New Medication
-![Adding Medication](https://via.placeholder.com/800x400?text=Adding+New+Medication)
+![Adding Medication](./docs/screenshots/adding-medication.png)
 *Add new medications to your profile with detailed dosage information.*
 
 ### Database Management
@@ -125,7 +149,7 @@ This project uses SQLite, a file-based database that doesn't require a separate 
   npm run prisma:studio
   ```
   
-  ![Prisma Studio](https://via.placeholder.com/800x400?text=Prisma+Studio+Database+Explorer)
+  ![Prisma Studio](./docs/screenshots/prisma-studio.png)
   *Prisma Studio provides a visual interface to browse and edit your database.*
 
 ## Project Structure
@@ -142,6 +166,8 @@ ayurveda/
 ├── components/         # Reusable components
 │   ├── ui/             # UI components
 │   └── dashboard/      # Dashboard-specific components
+├── docs/               # Documentation
+│   └── screenshots/    # Application screenshots
 ├── lib/                # Utility functions
 ├── prisma/             # Prisma schema and migrations
 │   ├── dev.db          # SQLite database file
