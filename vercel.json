@@ -1,12 +1,14 @@
 {
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install --legacy-peer-deps",
-  "outputDirectory": ".next",
-  "framework": "nextjs",
-  "git": {
-    "deploymentEnabled": {
-      "main": true
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_APP_URL": "@app_url"
     }
   }
 } 

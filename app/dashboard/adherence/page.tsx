@@ -18,7 +18,7 @@ interface AdherenceRecord {
   id: string
   medicationId: string
   medicationName: string
-  dosage: string
+    dosage: string
   timeOfDay: string
   scheduledTime: Date
   status: "taken" | "missed" | "scheduled"
@@ -143,143 +143,143 @@ const generateAdherenceRecords = (): AdherenceRecord[] => {
 
 // Calculate adherence statistics from records
 const calculateAdherenceStats = (records: AdherenceRecord[]): AdherenceStats => {
-  if (records.length === 0) {
+    if (records.length === 0) {
     return {
-      overall: 0,
-      byMedication: [],
-      byTime: [],
-      calendar: {},
-      streak: { current: 0, best: 0 },
+        overall: 0,
+        byMedication: [],
+        byTime: [],
+        calendar: {},
+        streak: { current: 0, best: 0 },
     };
   }
 
   // Overall adherence - hardcoded to 92% for consistency
   const overallAdherence = 92;
 
-  // Adherence by medication
+    // Adherence by medication
   const medicationMap = new Map<string, { id: string, name: string; total: number; taken: number; color?: string }>();
 
-  records.forEach((record) => {
+    records.forEach((record) => {
     const medId = record.medicationId;
     const medName = record.medicationName;
     const medColor = medications.find(m => m.id === medId)?.color;
 
-    if (!medicationMap.has(medId)) {
+      if (!medicationMap.has(medId)) {
       medicationMap.set(medId, { id: medId, name: medName, total: 0, taken: 0, color: medColor });
-    }
+      }
 
     const medStats = medicationMap.get(medId)!;
     medStats.total += 1;
 
     if (record.status === "taken") {
       medStats.taken += 1;
-    }
+      }
   });
 
-  const byMedication = Array.from(medicationMap.values()).map((stats) => ({
+    const byMedication = Array.from(medicationMap.values()).map((stats) => ({
     id: stats.id,
-    name: stats.name,
-    total: stats.total,
-    taken: stats.taken,
-    adherence: Math.round((stats.taken / stats.total) * 100),
+      name: stats.name,
+      total: stats.total,
+      taken: stats.taken,
+      adherence: Math.round((stats.taken / stats.total) * 100),
     color: stats.color
   }));
 
-  // Adherence by time of day
+    // Adherence by time of day
   const timeMap = new Map<string, { total: number; taken: number }>();
   const timeSlots = ["Morning", "Afternoon", "Evening", "Bedtime"];
 
-  timeSlots.forEach((slot) => {
+    timeSlots.forEach((slot) => {
     timeMap.set(slot, { total: 0, taken: 0 });
   });
 
-  records.forEach((record) => {
+    records.forEach((record) => {
     const scheduledTime = new Date(record.scheduledTime);
     const hour = scheduledTime.getHours();
 
     let timeSlot = "Morning";
-    if (hour >= 12 && hour < 17) {
+      if (hour >= 12 && hour < 17) {
       timeSlot = "Afternoon";
-    } else if (hour >= 17 && hour < 20) {
+      } else if (hour >= 17 && hour < 20) {
       timeSlot = "Evening";
-    } else if (hour >= 20) {
+      } else if (hour >= 20) {
       timeSlot = "Bedtime";
-    }
+      }
 
     const slotStats = timeMap.get(timeSlot)!;
     slotStats.total += 1;
 
     if (record.status === "taken") {
       slotStats.taken += 1;
-    }
+      }
   });
 
-  const byTime = timeSlots
-    .map((time) => {
+    const byTime = timeSlots
+      .map((time) => {
       const stats = timeMap.get(time)!;
-      return {
-        time,
-        total: stats.total,
-        taken: stats.taken,
-        adherence: stats.total > 0 ? Math.round((stats.taken / stats.total) * 100) : 0,
+        return {
+          time,
+          total: stats.total,
+          taken: stats.taken,
+          adherence: stats.total > 0 ? Math.round((stats.taken / stats.total) * 100) : 0,
       };
-    })
+      })
     .filter((stats) => stats.total > 0);
 
-  // Calendar data
+    // Calendar data
   const calendarData: Record<string, { total: number; taken: number }> = {};
 
-  records.forEach((record) => {
+    records.forEach((record) => {
     const dateStr = format(record.scheduledTime, "yyyy-MM-dd");
 
-    if (!calendarData[dateStr]) {
+      if (!calendarData[dateStr]) {
       calendarData[dateStr] = { total: 0, taken: 0 };
-    }
+      }
 
     calendarData[dateStr].total += 1;
 
     if (record.status === "taken") {
       calendarData[dateStr].taken += 1;
-    }
+      }
   });
 
-  // Calculate streak
-  const dateEntries = Object.entries(calendarData)
-    .map(([date, stats]) => ({
-      date,
-      isPerfect: stats.taken === stats.total,
-    }))
+    // Calculate streak
+    const dateEntries = Object.entries(calendarData)
+      .map(([date, stats]) => ({
+        date,
+        isPerfect: stats.taken === stats.total,
+      }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   let currentStreak = 0;
   let bestStreak = 0;
   let tempStreak = 0;
 
-  // Calculate from most recent day backward
-  for (let i = dateEntries.length - 1; i >= 0; i--) {
-    if (dateEntries[i].isPerfect) {
+    // Calculate from most recent day backward
+    for (let i = dateEntries.length - 1; i >= 0; i--) {
+      if (dateEntries[i].isPerfect) {
       currentStreak++;
-    } else {
+      } else {
       break;
+      }
     }
-  }
 
-  // Calculate best streak
-  for (const entry of dateEntries) {
-    if (entry.isPerfect) {
+    // Calculate best streak
+    for (const entry of dateEntries) {
+      if (entry.isPerfect) {
       tempStreak++;
       bestStreak = Math.max(bestStreak, tempStreak);
-    } else {
+      } else {
       tempStreak = 0;
+      }
     }
-  }
 
   return {
-    overall: overallAdherence,
-    byMedication,
-    byTime,
-    calendar: calendarData,
-    streak: { current: currentStreak, best: bestStreak },
+      overall: overallAdherence,
+      byMedication,
+      byTime,
+      calendar: calendarData,
+      streak: { current: currentStreak, best: bestStreak },
   };
 };
 
@@ -318,16 +318,16 @@ export default function AdherencePage() {
 
   // Simplified handler for logging doses
   const markDoseTaken = (recordId: string) => {
-    toast({
-      title: "Success",
-      description: "Dose marked as taken",
+      toast({
+        title: "Success",
+        description: "Dose marked as taken",
     });
   };
 
   const markDoseSkipped = (recordId: string) => {
-    toast({
-      title: "Success",
-      description: "Dose marked as skipped",
+      toast({
+        title: "Success",
+        description: "Dose marked as skipped",
     });
   };
 
@@ -351,7 +351,7 @@ export default function AdherencePage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div className="animate-slide-up">
-          <h1 className="text-3xl font-bold">Medication Adherence</h1>
+        <h1 className="text-3xl font-bold">Medication Adherence</h1>
           <p className="text-muted-foreground">Track how well you're keeping up with your medication schedule</p>
         </div>
         <div className="flex items-center gap-2 animate-slide-in-right">
@@ -532,9 +532,9 @@ export default function AdherencePage() {
                                   className="w-3 h-3 rounded-full mr-2" 
                                   style={{ backgroundColor: medications.find(m => m.id === record.medicationId)?.color || '#888' }}
                                 ></div>
-                                <span className="text-sm font-medium">
+                              <span className="text-sm font-medium">
                                   {record.medicationName} ({record.dosage})
-                                </span>
+                              </span>
                               </div>
                               <div className="text-xs text-muted-foreground">
                                 {format(record.scheduledTime, "h:mm a")}
@@ -606,14 +606,14 @@ export default function AdherencePage() {
               <CardDescription>See which medications you're taking consistently</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+                <div className="space-y-4">
                 {adherenceStats.byMedication.map((med, index) => (
                   <div 
                     key={med.name} 
                     className="space-y-1 p-3 hover:bg-muted/20 rounded-lg transition-all duration-300 animate-slide-up"
                     style={{ animationDelay: `${100 * index}ms` }}
                   >
-                    <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <div 
                           className="w-3 h-3 rounded-full mr-2" 
@@ -622,13 +622,13 @@ export default function AdherencePage() {
                         <span className="font-medium">{med.name}</span>
                       </div>
                       <span className={`${getAdherenceColor(med.adherence)} font-semibold`}>{med.adherence}%</span>
+                      </div>
+                      <AdherenceBar percentage={med.adherence} />
+                      <div className="text-xs text-muted-foreground text-right">
+                        {med.taken} of {med.total} doses taken
+                      </div>
                     </div>
-                    <AdherenceBar percentage={med.adherence} />
-                    <div className="text-xs text-muted-foreground text-right">
-                      {med.taken} of {med.total} doses taken
-                    </div>
-                  </div>
-                ))}
+                  ))}
 
                 <Separator className="my-4" />
                 
@@ -677,23 +677,23 @@ export default function AdherencePage() {
               <CardDescription>See when you're most consistent with your medications</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+                <div className="space-y-4">
                 {adherenceStats.byTime.map((time, index) => (
                   <div 
                     key={time.time} 
                     className="space-y-1 p-3 hover:bg-muted/20 rounded-lg transition-all duration-300 animate-slide-up"
                     style={{ animationDelay: `${100 * index}ms` }}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">{time.time}</span>
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{time.time}</span>
                       <span className={`${getAdherenceColor(time.adherence)} font-semibold`}>{time.adherence}%</span>
+                      </div>
+                      <AdherenceBar percentage={time.adherence} />
+                      <div className="text-xs text-muted-foreground text-right">
+                        {time.taken} of {time.total} doses taken
+                      </div>
                     </div>
-                    <AdherenceBar percentage={time.adherence} />
-                    <div className="text-xs text-muted-foreground text-right">
-                      {time.taken} of {time.total} doses taken
-                    </div>
-                  </div>
-                ))}
+                  ))}
 
                 <Separator className="my-4" />
 
@@ -732,7 +732,7 @@ export default function AdherencePage() {
                                 <span className="font-medium text-red-600 dark:text-red-400"> ({leastConsistent.adherence}% adherence)</span>
                               </p>
                             </div>
-                          </div>
+                </div>
                         );
                       })()}
 
